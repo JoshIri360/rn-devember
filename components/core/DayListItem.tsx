@@ -10,7 +10,7 @@ import { Link } from "expo-router";
  */
 const DayListItem = ({ item }: { item: number }) => {
   return (
-    <Link asChild href={`/${item}/`}>
+    <Link asChild href={`./days/${item}`}>
       <Pressable className="bg-chocolateBrown w-[104px] h-[104px] items-center justify-center rounded-xl">
         <Text
           className="text-[90px] text-center font-[InikaRegular] text-lightText"
