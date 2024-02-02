@@ -7,6 +7,11 @@ NativeWindStyleSheet.setOutput({
   default: "native",
 });
 
+/**
+ * Renders the main index component of the application.
+ *
+ * @returns The JSX element representing the index component.
+ */
 export default function index() {
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   const gap = 15;

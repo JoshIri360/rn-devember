@@ -5,6 +5,14 @@ import { useCallback } from "react";
 
 SplashScreen.preventAutoHideAsync();
 
+/**
+ * Root layout component.
+ *
+ * This component is responsible for rendering the root layout of the application.
+ * It handles the loading of fonts and displays the main screen.
+ *
+ * @returns The root layout component.
+ */
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
     MontserratBold: Montserrat_700Bold,
