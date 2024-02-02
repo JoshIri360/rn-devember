@@ -1,7 +1,7 @@
 import { SplashScreen, Stack } from "expo-router";
 import { Montserrat_700Bold, useFonts } from "@expo-google-fonts/montserrat";
 import { Inika_400Regular } from "@expo-google-fonts/inika";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,10 +19,10 @@ export default function RootLayout() {
     InikaRegular: Inika_400Regular,
   });
 
-  const onLayoutRootView = useCallback(async () => {
+  useEffect(() => {
     if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
     }
+    SplashScreen.hideAsync();
   }, [fontsLoaded, fontError]);
 
   if (!fontsLoaded && !fontError) {
