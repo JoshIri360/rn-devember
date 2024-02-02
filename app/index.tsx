@@ -1,14 +1,22 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  ListRenderItem,
+  FlatList as RNFlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useCallback } from "react";
 import { SplashScreen } from "expo-router";
 import { useFonts } from "expo-font";
+import DayListItem from "@/components/core/DayListItem";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function index() {
   const [fontsLoaded, fontError] = useFonts({
-    "Inika-Bold": require("../assets/fonts/Inika-Bold.ttf"),
-    "Inika-Regular": require("../assets/fonts/Inika-Regular.ttf"),
+    InikaBold: require("../assets/fonts/Inika-Bold.ttf"),
+    InikaRegular: require("../assets/fonts/Inika-Regular.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -17,9 +25,11 @@ export default function index() {
     }
   }, [fontsLoaded, fontError]);
 
-  const days = [1, 2, 3, 4, 5, 6, 7];
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
-  
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
   return (
     <View
@@ -27,18 +37,12 @@ export default function index() {
       onLayout={onLayoutRootView}
     >
       <FlatList
-        contentContainerStyle={{ gap: 10, paddingTop: 20, paddingBottom: 20 }}
-        columnWrapperStyle={{ gap: 10 }}
+        contentContainerStyle={{ gap: 15, paddingTop: 20, paddingBottom: 20 }}
+        columnWrapperStyle={{ gap: 15 }}
         showsVerticalScrollIndicator={false}
         numColumns={3}
         data={days}
-        renderItem={({ item }) => (
-          <View className="bg-chocolateBrown w-28 h-28 items-center justify-center rounded-xl">
-            <Text className="text-8xl text-center font-[Inika-Regular] text-lightText">
-              {item}
-            </Text>
-          </View>
-        )}
+        renderItem={({ item }) => <DayListItem item={item as number} />}
       />
     </View>
   );
