@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView } from "react-native";
+import { ScrollView, View } from "react-native";
 import DayListItem from "@/components/core/DayListItem";
 import HomePageFeatureCard from "@/components/core/HomePageFeatureCard";
 import { NativeWindStyleSheet } from "nativewind";
@@ -14,20 +14,24 @@ NativeWindStyleSheet.setOutput({
  */
 export default function index() {
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  const gap = 15;
-  const numColumns = 3;
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-darkBackground">
+    <ScrollView
+      className="flex-1 bg-darkBackground"
+      contentContainerStyle={{
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <HomePageFeatureCard />
-      <FlatList
-        contentContainerStyle={{ gap: gap, padding: gap }}
-        columnWrapperStyle={{ gap: gap }}
-        showsVerticalScrollIndicator={false}
-        numColumns={numColumns}
-        data={days}
-        renderItem={({ item }) => <DayListItem item={item as number} />}
-      />
-    </SafeAreaView>
+      <View
+        className="flex-row flex-wrap justify-center items-center w-full pt-5"
+        style={{ rowGap: 18, columnGap: 18 }}
+      >
+        {days.map((day) => (
+          <DayListItem key={day} item={day} />
+        ))}
+      </View>
+    </ScrollView>
   );
 }

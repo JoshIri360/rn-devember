@@ -10,12 +10,12 @@ import { Link } from "expo-router";
  */
 const DayListItem = ({ item }: { item: number }) => {
   return (
-    <Link asChild href={`./days/${item}`}>
-      <Pressable className="bg-chocolateBrown w-[104px] h-[104px] items-center justify-center rounded-xl">
+    <Link asChild href={`./(days)/day${item}`}>
+      <Pressable className="bg-chocolateBrown w-[104px] h-[104px] items-center justify-center rounded-xl p-0">
         <Text
-          className="text-[90px] text-center font-[InikaRegular] text-lightText"
+          className="text-6xl text-center font-[InikaRegular] text-lightText"
           style={{
-            lineHeight: 110,
+            lineHeight: 65,
           }}
         >
           {item}
