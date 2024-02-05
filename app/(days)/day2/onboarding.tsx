@@ -36,15 +36,20 @@ const onBoardingSteps = [
 
 const onboardingScreen = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
+
   const moveForward = () => {
     if (currentStep < onBoardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
+    } else {
+      router.back();
     }
   };
 
   const moveBackward = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+    } else {
+      router.back();
     }
   };
 
@@ -75,21 +80,23 @@ const onboardingScreen = () => {
             <AntDesign name="doubleright" size={16} color="black" />
           </Pressable>
           <GestureDetector gesture={fling}>
-            <Image
-              source={data.image}
-              className="w-[90%] aspect-square mt-20"
-              style={{ height: undefined }}
-              resizeMode="contain"
-            />
+            <View>
+              <Image
+                source={data.image}
+                className="w-[90%] aspect-square mt-20"
+                style={{ height: undefined }}
+                resizeMode="contain"
+              />
+              <View className="px-10">
+                <Text className="text-[18px] font-[PoppinsMedium] my-2 mt-6 text-center">
+                  {data.title}
+                </Text>
+                <Text className="font-[PoppinsRegular] text-center">
+                  {data.description}
+                </Text>
+              </View>
+            </View>
           </GestureDetector>
-          <View className="px-10">
-            <Text className="text-[18px] font-[PoppinsMedium] my-2 mt-6 text-center">
-              {data.title}
-            </Text>
-            <Text className="font-[PoppinsRegular] text-center">
-              {data.description}
-            </Text>
-          </View>
           <View className="flex-row mt-6">
             {onBoardingSteps.map((_, index) => {
               return (
@@ -108,13 +115,7 @@ const onboardingScreen = () => {
           </View>
           <View className="mt-10">
             <Pressable
-              onPress={() => {
-                if (currentStep < onBoardingSteps.length - 1) {
-                  setCurrentStep(currentStep + 1);
-                } else {
-                  router.back();
-                }
-              }}
+              onPress={moveForward}
               className="bg-[#E0E0E0] w-[200px] h-12 items-center justify-center rounded-full"
             >
               <Text className="font-[PoppinsMedium] text-[16px]">Next</Text>

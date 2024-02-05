@@ -2,6 +2,7 @@ import { ScrollView, View } from "react-native";
 import DayListItem from "@/components/core/DayListItem";
 import HomePageFeatureCard from "@/components/core/HomePageFeatureCard";
 import { NativeWindStyleSheet } from "nativewind";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -23,15 +24,15 @@ export default function index() {
         alignItems: "center",
       }}
     >
-      <HomePageFeatureCard />
-      <View
-        className="flex-row flex-wrap justify-center items-center w-full pt-5"
-        style={{ rowGap: 18, columnGap: 18 }}
-      >
-        {days.map((day) => (
-          <DayListItem key={day} item={day} />
-        ))}
-      </View>
+        <HomePageFeatureCard />
+        <View
+          className="flex-row flex-wrap justify-center items-center w-full pt-5"
+          style={{ rowGap: 18, columnGap: 18 }}
+        >
+          {days.map((day) => (
+            <DayListItem key={day} item={day} />
+          ))}
+        </View>
     </ScrollView>
   );
 }
