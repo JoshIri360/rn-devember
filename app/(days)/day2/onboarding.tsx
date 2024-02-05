@@ -12,6 +12,22 @@ import {
 import onBoardImage1 from "../../../assets/images/onboarding/onboard1.png";
 import onBoardImage2 from "../../../assets/images/onboarding/onboard2.png";
 import onBoardImage3 from "../../../assets/images/onboarding/onboard3.png";
+import Animated, {
+  BounceIn,
+  BounceInDown,
+  BounceInUp,
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  FadeOut,
+  SlideInDown,
+  SlideInLeft,
+  SlideInRight,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
 const onBoardingSteps = [
   {
@@ -36,10 +52,12 @@ const onBoardingSteps = [
 
 const onboardingScreen = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
+  let move = "";
 
   const moveForward = () => {
     if (currentStep < onBoardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
+      move = "forward";
     } else {
       router.back();
     }
@@ -48,6 +66,7 @@ const onboardingScreen = () => {
   const moveBackward = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+      move = "backward";
     } else {
       router.back();
     }
@@ -79,24 +98,34 @@ const onboardingScreen = () => {
             <Text className="font-[PoppinsMedium] pr-2">Skip</Text>
             <AntDesign name="doubleright" size={16} color="black" />
           </Pressable>
-          <GestureDetector gesture={fling}>
-            <View>
-              <Image
+          <View className="items-center justify-center">
+            <GestureDetector gesture={fling}>
+              <Animated.Image
                 source={data.image}
+                entering={FadeInUp}
+                key={currentStep}
                 className="w-[90%] aspect-square mt-20"
                 style={{ height: undefined }}
                 resizeMode="contain"
               />
-              <View className="px-10">
-                <Text className="text-[18px] font-[PoppinsMedium] my-2 mt-6 text-center">
-                  {data.title}
-                </Text>
-                <Text className="font-[PoppinsRegular] text-center">
-                  {data.description}
-                </Text>
-              </View>
+            </GestureDetector>
+            <View className="px-10">
+              <Animated.Text
+                className="text-[18px] font-[PoppinsMedium] my-2 mt-6 text-center"
+                entering={SlideInLeft}
+                key={currentStep}
+              >
+                {data.title}
+              </Animated.Text>
+              <Animated.Text
+                entering={SlideInLeft}
+                key={`description-${currentStep}`}
+                className="font-[PoppinsRegular] text-center"
+              >
+                {data.description}
+              </Animated.Text>
             </View>
-          </GestureDetector>
+          </View>
           <View className="flex-row mt-6">
             {onBoardingSteps.map((_, index) => {
               return (
