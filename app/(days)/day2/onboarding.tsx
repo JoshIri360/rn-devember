@@ -18,6 +18,7 @@ import Animated, {
   BounceInUp,
   FadeIn,
   FadeInDown,
+  FadeInLeft,
   FadeInUp,
   FadeOut,
   SlideInDown,
@@ -109,22 +110,20 @@ const onboardingScreen = () => {
                 resizeMode="contain"
               />
             </GestureDetector>
-            <View className="px-10">
-              <Animated.Text
+            <Animated.View className="px-10" entering={FadeInLeft.delay(100)}>
+              <Text
                 className="text-[18px] font-[PoppinsMedium] my-2 mt-6 text-center"
-                entering={SlideInLeft}
                 key={currentStep}
               >
                 {data.title}
-              </Animated.Text>
-              <Animated.Text
-                entering={SlideInLeft}
+              </Text>
+              <Text
                 key={`description-${currentStep}`}
                 className="font-[PoppinsRegular] text-center"
               >
                 {data.description}
-              </Animated.Text>
-            </View>
+              </Text>
+            </Animated.View>
           </View>
           <View className="flex-row mt-6">
             {onBoardingSteps.map((_, index) => {
