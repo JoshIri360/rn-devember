@@ -36,24 +36,27 @@ const onBoardingSteps = [
 
 const onboardingScreen = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
+  const moveForward = () => {
+    if (currentStep < onBoardingSteps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const moveBackward = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
 
   const data = onBoardingSteps[currentStep];
 
   const swipeRight = Gesture.Fling()
     .direction(Directions.RIGHT)
-    .onEnd(() => {
-      if (currentStep > 0) {
-        setCurrentStep(currentStep - 1);
-      }
-    });
+    .onEnd(moveBackward);
 
   const swipeLeft = Gesture.Fling()
     .direction(Directions.LEFT)
-    .onEnd(() => {
-      if (currentStep < onBoardingSteps.length - 1) {
-        setCurrentStep(currentStep + 1);
-      }
-    });
+    .onEnd(moveForward);
 
   const fling = Gesture.Simultaneous(swipeRight, swipeLeft);
 
