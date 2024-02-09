@@ -19,13 +19,11 @@ export default function componentName() {
   // Define the pan gesture
   const gesture = Gesture.Pan()
     .onBegin(() => {
-      // When the gesture begins, log the initial x translation and store the initial translations in the context
-      console.log("begin", translateX.value);
+      // When the gesture begins, store the initial translations in the context
       context.value = { x: translateX.value, y: translateY.value };
     })
     .onUpdate((event) => {
-      // When the gesture updates, log the x translation and update the translations based on the gesture's translation and the initial translations stored in the context
-      console.log("update", translateX.value);
+      // When the gesture updates, update the translations based on the gesture's translation and the initial translations stored in the context
       translateX.value = event.translationX + context.value.x;
       translateY.value = event.translationY + context.value.y;
     });
