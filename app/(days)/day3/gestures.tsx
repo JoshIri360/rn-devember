@@ -16,15 +16,21 @@ export default function componentName() {
 
   const context = useSharedValue({ x: 0, y: 0 });
 
+  // Define the pan gesture
   const gesture = Gesture.Pan()
     .onBegin(() => {
+      // When the gesture begins, log the initial x translation and store the initial translations in the context
+      console.log("begin", translateX.value);
       context.value = { x: translateX.value, y: translateY.value };
     })
     .onUpdate((event) => {
+      // When the gesture updates, log the x translation and update the translations based on the gesture's translation and the initial translations stored in the context
+      console.log("update", translateX.value);
       translateX.value = event.translationX + context.value.x;
       translateY.value = event.translationY + context.value.y;
     });
 
+  // Define the animated styles for the view that will be moved by the gesture
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
