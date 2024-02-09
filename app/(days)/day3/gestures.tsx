@@ -6,111 +6,100 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import Animated, {
-  SharedValue,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 
-interface AnimatedViewProps {
-  x: SharedValue<number>;
-  y: SharedValue<number>;
-}
-
-const useFollowAnimationPosition = ({ x, y }: AnimatedViewProps) => {
-  const springConfig = {
-    damping: 20,
-    stiffness: 300,
-  };
-
-  const followX = useDerivedValue(() => {
-    return withSpring(x.value, springConfig);
-  });
-
-  const followY = useDerivedValue(() => {
-    return withSpring(y.value, springConfig);
-  });
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: followX.value }, { translateY: followY.value }],
-    };
-  });
-
-  return { followX, followY, animatedStyle };
-};
-
-export default function LearningGesture() {
+export default function componentName() {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
 
   const context = useSharedValue({ x: 0, y: 0 });
 
-  // Define the pan gesture
   const gesture = Gesture.Pan()
     .onBegin(() => {
-      // When the gesture begins, store the initial translations in the context
       context.value = { x: translateX.value, y: translateY.value };
     })
     .onUpdate((event) => {
-      // When the gesture updates, update the translations based on the gesture's translation and the initial translations stored in the context
       translateX.value = event.translationX + context.value.x;
       translateY.value = event.translationY + context.value.y;
     });
 
-  const springConfig = {
-    damping: 20,
-    stiffness: 400,
-  };
-
-  const {
-    followX: followX1,
-    followY: followY1,
-    animatedStyle: animatedStyle1,
-  } = useFollowAnimationPosition({
-    x: translateX,
-    y: translateY,
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: withSpring(translateX.value) },
+        { translateY: withSpring(translateY.value) },
+      ],
+    };
   });
 
-  const {
-    followX: followX2,
-    followY: followY2,
-    animatedStyle: animatedStyle2,
-  } = useFollowAnimationPosition({
-    x: followX1,
-    y: followY1,
+  const followX = useDerivedValue(() => {
+    return translateX.value;
   });
 
-  const {
-    followX: followX3,
-    followY: followY3,
-    animatedStyle: animatedStyle3,
-  } = useFollowAnimationPosition({
-    x: followX2,
-    y: followY2,
+  const followY = useDerivedValue(() => {
+    return translateY.value;
+  });
+
+  const animatedFollowStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: withSpring(followX.value, {
+            damping: 300,
+            stiffness: 100,
+          }),
+        },
+        {
+          translateY: withSpring(followY.value, {
+            damping: 300,
+            stiffness: 100,
+          }),
+        },
+      ],
+    };
+  });
+
+  const animatedThirdCircleStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: withSpring(followX.value, {
+            damping: 300,
+            stiffness: 80,
+          }),
+        },
+        {
+          translateY: withSpring(followY.value, {
+            damping: 300,
+            stiffness: 80,
+          }),
+        },
+      ],
+    };
   });
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View className="flex-1 justify-center items-center bg-pink-200">
-        <GestureDetector gesture={gesture}>
-          <View className="relative">
-            <Animated.View
-              style={animatedStyle1}
-              className="h-20 w-20 bg-blue-400 rounded-full absolute"
-            ></Animated.View>
-            <Animated.View
-              style={animatedStyle2}
-              className="h-20 w-20 bg-red-400 rounded-full absolute"
-            ></Animated.View>
-            <Animated.View
-              style={animatedStyle3}
-              className="h-20 w-20 bg-green-400 rounded-full absolute"
-            ></Animated.View>
-          </View>
-        </GestureDetector>
-      </View>
+      <GestureDetector gesture={gesture}>
+        <View className="flex-1 justify-center items-center bg-blue-200">
+          <Animated.View
+            className="bg-red-300 absolute h-20 w-20 rounded-full"
+            style={animatedStyle}
+          ></Animated.View>
+          <Animated.View
+            className="bg-blue-300 absolute -z-10 h-20 w-20 rounded-full"
+            style={animatedFollowStyle}
+          ></Animated.View>
+          <Animated.View
+            className="bg-green-300 absolute -z-20 h-20 w-20 rounded-full"
+            style={animatedThirdCircleStyle}
+          ></Animated.View>
+        </View>
+      </GestureDetector>
     </GestureHandlerRootView>
   );
 }
