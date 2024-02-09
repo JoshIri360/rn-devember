@@ -15,7 +15,7 @@ const HomePageFeatureCard = () => {
         24
       </Text>
       <Text className="font-[MontserratBold] text-white text-lg">
-        DAYS DEVEMBER
+        DAYS FEBBUILD
       </Text>
     </View>
   );

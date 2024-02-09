@@ -8,27 +8,10 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
-
 import onBoardImage1 from "../../../assets/images/onboarding/onboard1.png";
 import onBoardImage2 from "../../../assets/images/onboarding/onboard2.png";
 import onBoardImage3 from "../../../assets/images/onboarding/onboard3.png";
-import Animated, {
-  BounceIn,
-  BounceInDown,
-  BounceInUp,
-  FadeIn,
-  FadeInDown,
-  FadeInLeft,
-  FadeInUp,
-  FadeOut,
-  SlideInDown,
-  SlideInLeft,
-  SlideInRight,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from "react-native-reanimated";
+import Animated, { FadeInLeft, FadeInUp } from "react-native-reanimated";
 
 const onBoardingSteps = [
   {
@@ -53,12 +36,10 @@ const onBoardingSteps = [
 
 const onboardingScreen = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
-  let move = "";
 
   const moveForward = () => {
     if (currentStep < onBoardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
-      move = "forward";
     } else {
       router.back();
     }
@@ -67,7 +48,6 @@ const onboardingScreen = () => {
   const moveBackward = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
-      move = "backward";
     } else {
       router.back();
     }
@@ -110,17 +90,15 @@ const onboardingScreen = () => {
                 resizeMode="contain"
               />
             </GestureDetector>
-            <Animated.View className="px-10" entering={FadeInLeft.delay(100)}>
-              <Text
-                className="text-[18px] font-[PoppinsMedium] my-2 mt-6 text-center"
-                key={currentStep}
-              >
+            <Animated.View
+              className="px-10"
+              entering={FadeInLeft.delay(100)}
+              key={`text-${currentStep}`}
+            >
+              <Text className="text-[18px] font-[PoppinsMedium] my-2 mt-6 text-center">
                 {data.title}
               </Text>
-              <Text
-                key={`description-${currentStep}`}
-                className="font-[PoppinsRegular] text-center"
-              >
+              <Text className="font-[PoppinsRegular] text-center">
                 {data.description}
               </Text>
             </Animated.View>
@@ -146,7 +124,15 @@ const onboardingScreen = () => {
               onPress={moveForward}
               className="bg-[#E0E0E0] w-[200px] h-12 items-center justify-center rounded-full"
             >
-              <Text className="font-[PoppinsMedium] text-[16px]">Next</Text>
+              <Text className="font-[PoppinsMedium] text-[16px]">
+                {
+                  {
+                    0: "Next",
+                    1: "Next",
+                    2: "Get Started",
+                  }[currentStep]
+                }
+              </Text>
             </Pressable>
           </View>
         </View>
