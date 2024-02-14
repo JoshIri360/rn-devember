@@ -6,13 +6,39 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import Animated, {
+  SharedValue,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 
-export default function componentName() {
+const generateStyle = (x: SharedValue<number>, y: SharedValue<number>) => {
+  const followX = useDerivedValue(() => {
+    return withSpring(x.value);
+  });
+
+  const followY = useDerivedValue(() => {
+    return withSpring(y.value);
+  });
+
+  const animatedFollowStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: withSpring(followX.value),
+        },
+        {
+          translateY: withSpring(followY.value),
+        },
+      ],
+    };
+  });
+
+  return { animatedFollowStyle, followX, followY };
+};
+
+export default function Gestures() {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
 
@@ -36,51 +62,15 @@ export default function componentName() {
     };
   });
 
-  const followX = useDerivedValue(() => {
-    return translateX.value;
-  });
+  const { animatedFollowStyle, followX, followY } = generateStyle(
+    translateX,
+    translateY
+  );
 
-  const followY = useDerivedValue(() => {
-    return translateY.value;
-  });
-
-  const animatedFollowStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: withSpring(followX.value, {
-            damping: 300,
-            stiffness: 100,
-          }),
-        },
-        {
-          translateY: withSpring(followY.value, {
-            damping: 300,
-            stiffness: 100,
-          }),
-        },
-      ],
-    };
-  });
-
-  const animatedThirdCircleStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: withSpring(followX.value, {
-            damping: 300,
-            stiffness: 80,
-          }),
-        },
-        {
-          translateY: withSpring(followY.value, {
-            damping: 300,
-            stiffness: 80,
-          }),
-        },
-      ],
-    };
-  });
+  const { animatedFollowStyle: animatedFollowStyle2 } = generateStyle(
+    followX,
+    followY
+  );
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -96,7 +86,7 @@ export default function componentName() {
           ></Animated.View>
           <Animated.View
             className="bg-green-300 absolute -z-20 h-20 w-20 rounded-full"
-            style={animatedThirdCircleStyle}
+            style={animatedFollowStyle2}
           ></Animated.View>
         </View>
       </GestureDetector>
