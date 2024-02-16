@@ -1,12 +1,15 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import { View, Text, Pressable } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet from "./BottomSheet";
 
 export default function Gestures() {
-    const onPress = 
+  const ref = useRef(null);
+  const onPress = useCallback(() => {
+    ref?.current?.scrollTo(-200);
+  }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -15,8 +18,11 @@ export default function Gestures() {
       />
       <View className="bg-slate-950 flex-1 items-center justify-center">
         <StatusBar style="light" />
-        <Pressable className="h-14 w-14 rounded-full bg-white"></Pressable>
-        <BottomSheet />
+        <Pressable
+          onPress={onPress}
+          className="h-14 w-14 rounded-full bg-white"
+        ></Pressable>
+        <BottomSheet ref={ref} />
       </View>
     </GestureHandlerRootView>
   );
