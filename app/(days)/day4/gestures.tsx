@@ -3,10 +3,10 @@ import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useRef } from "react";
 import { View, Text, Pressable } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet from "./BottomSheet";
+import BottomSheet, { BottomSheetRefProps } from "./BottomSheet";
 
 export default function Gestures() {
-  const ref = useRef(null);
+  const ref = useRef<BottomSheetRefProps>(null);
   const onPress = useCallback(() => {
     ref?.current?.scrollTo(-200);
   }, []);

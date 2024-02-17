@@ -15,7 +15,7 @@ import Animated, {
 const SCREEN_HEIGTH = Dimensions.get("screen").height;
 
 type BottomSheetProps = {};
-type BottomSheetRefProps = { scrollTo: (destination: number) => void };
+export type BottomSheetRefProps = { scrollTo: (destination: number) => void };
 
 const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
   ({}, ref) => {
